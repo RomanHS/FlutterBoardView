@@ -11,8 +11,6 @@ class BoardList extends StatefulWidget {
   final List<Widget>? header;
   final Widget? footer;
   final List<BoardItem>? items;
-  final Color? backgroundColor;
-  final Color? headerBackgroundColor;
   final BoardViewState? boardView;
   final OnDropList? onDropList;
   final OnTapList? onTapList;
@@ -24,8 +22,6 @@ class BoardList extends StatefulWidget {
     this.header,
     this.items,
     this.footer,
-    this.backgroundColor,
-    this.headerBackgroundColor,
     this.boardView,
     this.draggable = true,
     this.index,
@@ -105,10 +101,7 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
               _startDrag(widget, context);
             }
           },
-          child: Container(
-            color: widget.headerBackgroundColor,
-            child: Row(mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.center, children: widget.header!),
-          )));
+          child: Row(mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.center, children: widget.header!)));
     }
     if (widget.items != null) {
       listWidgets.add(Container(

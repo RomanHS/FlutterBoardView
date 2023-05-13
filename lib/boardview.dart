@@ -329,8 +329,6 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
         if (widget.lists![index].boardView == null) {
           widget.lists![index] = BoardList(
             items: widget.lists![index].items,
-            headerBackgroundColor: widget.lists![index].headerBackgroundColor,
-            backgroundColor: widget.lists![index].backgroundColor,
             footer: widget.lists![index].footer,
             header: widget.lists![index].header,
             boardView: this,
@@ -343,8 +341,6 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
         if (widget.lists![index].index != index) {
           widget.lists![index] = BoardList(
             items: widget.lists![index].items,
-            headerBackgroundColor: widget.lists![index].headerBackgroundColor,
-            backgroundColor: widget.lists![index].backgroundColor,
             footer: widget.lists![index].footer,
             header: widget.lists![index].header,
             boardView: this,
