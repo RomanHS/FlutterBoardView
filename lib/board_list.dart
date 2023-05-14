@@ -1,8 +1,8 @@
+import 'package:anchor_scroll_controller/anchor_scroll_controller.dart';
 import 'package:boardview/board_item.dart';
 import 'package:boardview/boardview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
 typedef void OnDropList(int? listIndex, int? oldListIndex);
 typedef void OnTapList(int? listIndex);
@@ -41,9 +41,13 @@ class BoardList extends StatefulWidget {
 
 class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin {
   List<BoardItemState> itemStates = [];
-  AutoScrollController boardListController = new AutoScrollController();
+  AnchorScrollController boardListController = new AnchorScrollController();
 
-  Future<void> animateTo(int index, {Duration? duration}) => boardListController.scrollToIndex(index, duration: duration ?? scrollAnimationDuration);
+  Future<void> animateTo(
+    int index, {
+    Duration? duration,
+  }) =>
+      boardListController.scrollToIndex(index: index, scrollSpeed: duration?.inSeconds.toDouble() ?? 2);
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
@@ -116,29 +120,36 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
                 controller: boardListController,
                 itemCount: widget.items!.length,
                 itemBuilder: (ctx, index) {
-                  if (widget.items![index].boardList == null ||
-                      widget.items![index].index != index ||
-                      widget.items![index].boardList!.widget.index != widget.index ||
-                      widget.items![index].boardList != this) {
-                    widget.items![index] = new BoardItem(
-                      boardList: this,
-                      item: widget.items![index].item,
-                      draggable: widget.items![index].draggable,
-                      index: index,
-                      onDropItem: widget.items![index].onDropItem,
-                      onTapItem: widget.items![index].onTapItem,
-                      onDragItem: widget.items![index].onDragItem,
-                      onStartDragItem: widget.items![index].onStartDragItem,
-                    );
+                  Widget getItemWidget() {
+                    if (widget.items![index].boardList == null ||
+                        widget.items![index].index != index ||
+                        widget.items![index].boardList!.widget.index != widget.index ||
+                        widget.items![index].boardList != this) {
+                      widget.items![index] = new BoardItem(
+                        boardList: this,
+                        item: widget.items![index].item,
+                        draggable: widget.items![index].draggable,
+                        index: index,
+                        onDropItem: widget.items![index].onDropItem,
+                        onTapItem: widget.items![index].onTapItem,
+                        onDragItem: widget.items![index].onDragItem,
+                        onStartDragItem: widget.items![index].onStartDragItem,
+                      );
+                    }
+                    if (widget.boardView!.draggedItemIndex == index && widget.boardView!.draggedListIndex == widget.index) {
+                      return Opacity(
+                        opacity: 0.0,
+                        child: widget.items![index],
+                      );
+                    } else {
+                      return widget.items![index];
+                    }
                   }
-                  if (widget.boardView!.draggedItemIndex == index && widget.boardView!.draggedListIndex == widget.index) {
-                    return Opacity(
-                      opacity: 0.0,
-                      child: widget.items![index],
-                    );
-                  } else {
-                    return widget.items![index];
-                  }
+
+                  return AnchorItemWrapper(
+                    index: index,
+                    child: getItemWidget(),
+                  );
                 },
               ))));
     }
