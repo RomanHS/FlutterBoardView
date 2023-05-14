@@ -147,6 +147,7 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
                   }
 
                   return AnchorItemWrapper(
+                    controller: boardListController,
                     index: index,
                     child: getItemWidget(),
                   );
