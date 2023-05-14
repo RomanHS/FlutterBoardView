@@ -43,9 +43,7 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
   List<BoardItemState> itemStates = [];
   AutoScrollController boardListController = new AutoScrollController();
 
-  Future<void> animateTo(int index, {Duration? duration}) async {
-    boardListController.scrollToIndex(index, duration: duration ?? scrollAnimationDuration);
-  }
+  Future<void> animateTo(int index, {Duration? duration}) => boardListController.scrollToIndex(index, duration: duration ?? scrollAnimationDuration);
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
