@@ -2,6 +2,7 @@ import 'package:boardview/board_item.dart';
 import 'package:boardview/boardview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 typedef void OnDropList(int? listIndex, int? oldListIndex);
 typedef void OnTapList(int? listIndex);
@@ -40,7 +41,11 @@ class BoardList extends StatefulWidget {
 
 class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin {
   List<BoardItemState> itemStates = [];
-  ScrollController boardListController = new ScrollController();
+  AutoScrollController boardListController = new AutoScrollController();
+
+  Future<void> animateTo(int index, {Duration? duration}) async {
+    boardListController.scrollToIndex(index, duration: duration ?? scrollAnimationDuration);
+  }
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
